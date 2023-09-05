@@ -18,14 +18,18 @@ module.exports = {
     ],
     userPermissions: [PermissionFlagsBits.ManageChannels],
     botPermissions: [PermissionFlagsBits.SendMessages],
+
     run: async (client, interaction) => {
         await interaction.deferReply({ ephemeral: true });
+
         const selectedChannel = interaction.options.getChannel('channel')
         if (selectedChannel && !client.misc.channels.includes(selectedChannel.id.toString())) {
+
             if (selectedChannel.type != ChannelType.GuildText) return interaction.reply({
                 content: `:x: Only text channels are allowed to be set as a chatting channel.`, 
                 ephemeral: true
             });
+            
             const permissions = selectedChannel.permissionsFor(client.user);
             if (permissions.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages])) {
                 client.misc.channels.push(selectedChannel.id.toString());
